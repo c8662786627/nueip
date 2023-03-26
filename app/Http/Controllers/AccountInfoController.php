@@ -124,7 +124,7 @@ class AccountInfoController extends Controller
     }
 
     /**
-     * 刪除指定資源
+     * 刪除指定id
      *
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
@@ -138,9 +138,9 @@ class AccountInfoController extends Controller
         return response()->json(['success' => true, 'message' => '資源已成功刪除！', 'data' => null]);
     }
     /**
-     * 刪除指定資源
+     * 刪除指定所id
      *
-     * @param  int  $id
+     * @param  int  $ids
      * @return \Illuminate\Http\JsonResponse
      */
     public function alldelete(Request $request)
@@ -150,6 +150,11 @@ class AccountInfoController extends Controller
         AccountInfo::whereIn('id', $ids)->delete();
         return response()->json(['success' => true, 'message' => '已成功刪除資源！', 'data' => null]);
     }
+    /**
+     * 匯出csv資料
+     *
+     * 
+     */
     public function exportCSV()
     {
         // 取得要匯出的資料
