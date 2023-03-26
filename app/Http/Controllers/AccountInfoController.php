@@ -13,7 +13,10 @@ class AccountInfoController extends Controller
      * @return \Illuminate\Http\Response
      */
     /**
-     * 顯示資源列表
+     * 顯示清單
+     * 
+     * @param  \Illuminate\Http\Request  $request  HTTP請求物件
+     * @return \Illuminate\Http\Response HTTP回應物件
      */
     public function index(Request $request)
     {
@@ -33,36 +36,21 @@ class AccountInfoController extends Controller
         
         $accountInfos = $query->orderBy($orderBy, $orderDirection)->paginate(10);
 
+      
         return view('account_info', [
                                         'accountInfos' => $accountInfos,
                                         'orderBy'=>$orderBy,
                                         'orderDirection'=>$orderDirection,
                                         'search' => $search,
+                                        
                                     ]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    /**
-     * 顯示新增資源的表單
-     */
-    public function create()
-    {
-        //
-        return view('account-info.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * 儲存新建的資源
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    /**
-     * 儲存新建的資源
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -76,6 +64,7 @@ class AccountInfoController extends Controller
             
         ]);
 
+        $validatedData['account'] = strtolower($validatedData['account']);
 
         $accountInfo = AccountInfo::create($validatedData);
 
@@ -83,13 +72,10 @@ class AccountInfoController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 顯示指定資源的詳細資訊
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    /**
-     * 顯示指定資源的詳細資訊
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
@@ -100,13 +86,10 @@ class AccountInfoController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * 顯示編輯資源的表單
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
-     /**
-     * 顯示編輯資源的表單
      */
     public function edit($id)
     {
@@ -116,14 +99,11 @@ class AccountInfoController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * 更新指定資料
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-     /**
-     * 更新指定資源
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -136,7 +116,7 @@ class AccountInfoController extends Controller
             'email' => 'required|email',
             
         ]);
-
+        $validatedData['account'] = strtolower($validatedData['account']);
         $accountInfo = AccountInfo::findOrFail($id);
         $accountInfo->update($validatedData);
 
@@ -144,13 +124,10 @@ class AccountInfoController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 刪除指定資源
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    /**
-     * 刪除指定資源
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {

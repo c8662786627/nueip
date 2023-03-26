@@ -43,8 +43,14 @@
                     <tr>
                         <td>{{ $accountInfo->account }}</td>
                         <td>{{ $accountInfo->name }}</td>
-                        <td>{{ $accountInfo->gender }}</td>
-                        <td>{{ $accountInfo->birthday }}</td>
+                        <td>
+                            @if($accountInfo->gender == '1')
+                            男
+                            @else
+                            女
+                            @endif
+                        </td>
+                        <td>{{ date('Y年n月j日',strtotime($accountInfo->birthday)) }}</td>
                         <td>{{ $accountInfo->email }}</td>
                         <td>{{ $accountInfo->note }}</td>
                         <td>
@@ -114,8 +120,8 @@
                     </div>
                     <label for="" class="form-label">性別</label>
                     <select name="gender" id="editGender" class="form-select">
-                        <option value="男">男</option>
-                        <option value="女">女</option>
+                        <option value="1">男</option>
+                        <option value="0">女</option>
                     </select>
                     <div class="mb-3">
                         <label for="" class="form-label">生日</label>
@@ -155,8 +161,8 @@
                 <input type="text" name="name" class="form-control">
                 <label for="">性別</label>
                 <select name="gender" id="" class="form-select">
-                    <option value="男">男</option>
-                    <option value="女">女</option>
+                    <option value="1">男</option>
+                    <option value="0">女</option>
                 </select>
                 <label for="">生日</label>
                 <input type="date" name="birthday" class="form-control">
@@ -225,10 +231,10 @@
                 $('#editAccount').val(data['data']['account']);
                 $('#editName').val(data['data']['name']);
                 var gender = data['data']['gender'];
-                if(gender == '男'){
-                    $('#editGender').val('男');
+                if(gender == '1'){
+                    $('#editGender').val('1');
                 }else{
-                    $('#editGender').val('女');
+                    $('#editGender').val('0');
                 }
                 $('#editBirthday').val(data['data']['birthday']);
                 $('#editEmail').val(data['data']['email']);
