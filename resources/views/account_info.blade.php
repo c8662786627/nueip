@@ -16,7 +16,18 @@
                 <thead>
                     <tr>
                         <th>帳號</th>
-                        <th>姓名</th>
+                        <th>
+                            <a href="?orderBy=name&orderDirection={{ $orderDirection === 'asc' ? 'desc' : 'asc' }}">
+                                姓名
+                                @if ($orderBy === 'name')
+                                    @if ($orderDirection === 'asc')
+                                        <i class="fa fa-sort-down"></i>
+                                    @else
+                                        <i class="fa fa-sort-up"></i>
+                                    @endif
+                                @endif
+                            </a>
+                        </th>
                         <th>性別</th>
                         <th>生日</th>
                         <th>Email</th>

@@ -20,16 +20,24 @@ class AccountInfoController extends Controller
         //
         $query = AccountInfo::query();
 
+        //搜尋
         $search = $request->input('search');
-
 
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%");
         }
 
-        $accountInfos = $query->paginate(10);
+        //排序
+        $orderBy = $request->input('orderBy','name');
+        $orderDirection = $request->input('orderDirection','asc');
+        
+        $accountInfos = $query->orderBy($orderBy, $orderDirection)->paginate(10);
 
-        return view('account_info', ['accountInfos' => $accountInfos]);
+        return view('account_info', [
+                                        'accountInfos' => $accountInfos,
+                                        'orderBy'=>$orderBy,
+                                        'orderDirection'=>$orderDirection,
+                                    ]);
     }
 
     /**
