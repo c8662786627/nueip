@@ -68,12 +68,12 @@ class AccountInfoController extends Controller
     {
         //
         $validatedData = $request->validate([
-            'account' => 'required',
+            'account' => 'required|alpha_num',
             'name' => 'required',
             'gender' => 'required',
             'birthday' => 'required|date',
             'email' => 'required|email',
-            'remark' => '',
+            
         ]);
 
 
@@ -129,12 +129,12 @@ class AccountInfoController extends Controller
     {
         //
         $validatedData = $request->validate([
-            'account' => 'required',
+            'account' => 'required|alpha_num',
             'name' => 'required',
             'gender' => 'required',
             'birthday' => 'required|date',
             'email' => 'required|email',
-            'note' => 'nullable',
+            
         ]);
 
         $accountInfo = AccountInfo::findOrFail($id);
