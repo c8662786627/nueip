@@ -23,4 +23,6 @@ Route::get('/accountmanage', [AccountInfoController::class, 'index'])->name('acc
 Route::post('/accountmanage', [AccountInfoController::class, 'store'])->name('accountmanage');
 Route::post('/accountmanage/{id}', [AccountInfoController::class, 'show']);
 Route::put('/accountmanage/{id}/edit', [AccountInfoController::class, 'update'])->name('account.update');
+Route::delete('/accountmanage/alldelete', [AccountInfoController::class, 'alldelete']);
 Route::delete('/accountmanage/{id}', [AccountInfoController::class, 'destroy']);
+Route::get('/export-csv', [AccountInfoController::class, 'exportCSV']);

@@ -7,16 +7,18 @@
     <div class="row">
         <div class="col-md-12">
             
-                <form method="GET" action="/accountmanage" style="margin-top:20px;">
-                    <input type="text" placeholder="搜尋姓名" aria-label="Search" name="search" >
-                    <input type="hidden" name="orderBy" value="{{ $orderBy }}">
-                    <input type="hidden" name="orderDirection" value="{{ $orderDirection }}">
-                    <button class="btn btn-primary">搜索</button>
-                </form>
-            
+            <form method="GET" action="/accountmanage" style="margin-top:20px;">
+                <input type="text" placeholder="搜尋姓名" aria-label="Search" name="search" >
+                <input type="hidden" name="orderBy" value="{{ $orderBy }}">
+                <input type="hidden" name="orderDirection" value="{{ $orderDirection }}">
+                <button class="btn btn-primary">搜索</button>
+            </form>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#allDeleteModal">批次刪除</button>
+            <a href="/export-csv">匯出CSV檔案</a>
             <table class="table">
                 <thead>
                     <tr>
+                        <th><input type="checkbox" id="check-all">全選</th>
                         <th>帳號</th>
                         <th>
                             <a href="?orderBy=name&orderDirection={{ $orderDirection === 'asc' ? 'desc' : 'asc' }}&search={{ $search ?? '' }}">
@@ -41,6 +43,7 @@
                 <tbody>
                     @foreach ($accountInfos as $accountInfo)
                     <tr>
+                        <td><input type="checkbox" class="check-item" name="check[]" value="{{ $accountInfo->id }}"></td>
                         <td>{{ $accountInfo->account }}</td>
                         <td>{{ $accountInfo->name }}</td>
                         <td>
@@ -78,6 +81,24 @@
        
     </div>
 </div>
+</div>
+<!-- 批次刪除Modal -->
+<div class="modal fade" id="allDeleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">確定所選的全部刪除嗎？</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="allDel">確定</button>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- 刪除Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -186,7 +207,41 @@
 
 <script>
     $(document).ready(function() {
-
+        
+        $('#check-all').click(function() {
+            $('.check-item').prop('checked', $(this).prop('checked'));
+            selectedItems = [];
+            if ($(this).prop('checked')) {
+                $('input[name="check[]"]').each(function() {
+                    selectedItems.push($(this).val());
+                });
+            }
+        });
+        //批次刪除
+        $('#allDel').click(function () {
+        var ids = [];
+        $('.check-item:checked').each(function() {
+            ids.push($(this).val());
+        });
+        
+        $.ajax({
+            url: "/accountmanage/alldelete",
+            type: "delete",
+            data: { ids: ids },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: "json",
+            success: function(response) {
+                $('#allDeleteModal').modal('hide');
+                location.reload(true);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert(xhr.responseText);
+            }
+        });
+        });
          // 新增
         $('#createBtn').click(function () {
             var formData = $('#create').serialize(); // 將表單數據序列化為字串

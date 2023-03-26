@@ -137,4 +137,51 @@ class AccountInfoController extends Controller
 
         return response()->json(['success' => true, 'message' => '資源已成功刪除！', 'data' => null]);
     }
+    /**
+     * 刪除指定資源
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function alldelete(Request $request)
+    {
+        //
+        $ids = $request->input('ids');
+        AccountInfo::whereIn('id', $ids)->delete();
+        return response()->json(['success' => true, 'message' => '已成功刪除資源！', 'data' => null]);
+    }
+    public function exportCSV()
+    {
+        // 取得要匯出的資料
+        $accountInfos = AccountInfo::all();
+    
+        // 建立CSV檔案
+        $filename = 'account_infos.csv';
+        $handle = fopen($filename, 'w+');
+    
+        // 寫入標頭
+        fputcsv($handle, ['帳號', '姓名', '性別', '生日', 'Email', '備註']);
+    
+        // 寫入資料
+        foreach ($accountInfos as $accountInfo) {
+            fputcsv($handle, [
+                $accountInfo->account,
+                $accountInfo->name,
+                $accountInfo->gender == '1' ? '男' : '女',
+                date('Y年n月j日',strtotime($accountInfo->birthday)),
+                $accountInfo->email,
+                $accountInfo->note,
+            ]);
+        }
+    
+        // 關閉CSV檔案
+        fclose($handle);
+    
+        // 下載CSV檔案
+        $headers = [
+            'Content-Type' => 'text/csv;charset=utf-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ];
+        return response()->download($filename, $filename, $headers);
+    }   
 }
