@@ -9,6 +9,8 @@
             
                 <form method="GET" action="/accountmanage" style="margin-top:20px;">
                     <input type="text" placeholder="搜尋姓名" aria-label="Search" name="search" >
+                    <input type="hidden" name="orderBy" value="{{ $orderBy }}">
+                    <input type="hidden" name="orderDirection" value="{{ $orderDirection }}">
                     <button class="btn btn-primary">搜索</button>
                 </form>
             
@@ -17,7 +19,7 @@
                     <tr>
                         <th>帳號</th>
                         <th>
-                            <a href="?orderBy=name&orderDirection={{ $orderDirection === 'asc' ? 'desc' : 'asc' }}">
+                            <a href="?orderBy=name&orderDirection={{ $orderDirection === 'asc' ? 'desc' : 'asc' }}&search={{ $search ?? '' }}">
                                 姓名
                                 @if ($orderBy === 'name')
                                     @if ($orderDirection === 'asc')

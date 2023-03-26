@@ -37,6 +37,7 @@ class AccountInfoController extends Controller
                                         'accountInfos' => $accountInfos,
                                         'orderBy'=>$orderBy,
                                         'orderDirection'=>$orderDirection,
+                                        'search' => $search,
                                     ]);
     }
 
