@@ -55,7 +55,7 @@
                         </td>
                         <td>{{ date('Y年n月j日',strtotime($accountInfo->birthday)) }}</td>
                         <td>{{ $accountInfo->email }}</td>
-                        <td>{{ $accountInfo->note }}</td>
+                        <td>{{ $accountInfo->remark }}</td>
                         <td>
                             <button type="button" class="btn btn-primary edit-btn" data-id="{{ $accountInfo->id }}"  >更改</button>
                               
@@ -154,7 +154,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">備註</label>
-                        <input type="text" class="form-control" id="editRemork" name="remork">
+                        <input type="text" class="form-control" id="editRemark" name="remark">
                     </div>
                 </form>
             </div>
@@ -282,6 +282,7 @@
             dataType:"json",
             success: function (data) {
                 // 關閉 Modal 並重新載入資料
+                console.log(data);
                 $('#editId').val(data['data']['id']);
                 $('#editAccount').val(data['data']['account']);
                 $('#editName').val(data['data']['name']);

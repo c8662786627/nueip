@@ -61,7 +61,7 @@ class AccountInfoController extends Controller
             'gender' => 'required',
             'birthday' => 'required|date',
             'email' => 'required|email',
-            
+            'remark'=>'',
         ]);
 
         $validatedData['account'] = strtolower($validatedData['account']);
@@ -114,7 +114,7 @@ class AccountInfoController extends Controller
             'gender' => 'required',
             'birthday' => 'required|date',
             'email' => 'required|email',
-            
+            'remark'=>'',
         ]);
         $validatedData['account'] = strtolower($validatedData['account']);
         $accountInfo = AccountInfo::findOrFail($id);
